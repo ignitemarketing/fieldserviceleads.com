@@ -1,0 +1,37 @@
+export const content = {
+  brand: 'Field Service Leads',
+  domain: 'fieldserviceleads.com',
+  serviceType: 'Lead generation for field-service businesses',
+  title: 'Field Service Leads — More Booked Jobs From Local Search',
+  description: 'Turn local searches into booked field service jobs. A website and always-on SEO engine wired to Jobber, ServiceTitan, and Housecall Pro. Join early access.',
+  navCta: 'Get early access',
+  badge: 'Early access · field service lead engine',
+  h1a: 'More booked jobs from ', h1grad: 'the customers already searching', h1b: '.',
+  sub: 'Your next customers are searching right now. We turn that demand into booked jobs with a website and always-on local SEO — wired to the software you already run.',
+  trust: 'No new tools to learn. Leads flow into your existing system.',
+  mock: ['search', 'pin', 'phone'],
+  mockStat: 'Lead engine',
+  featHead: {
+    eyebrow: 'How it works',
+    title: 'Searches in, booked jobs out.',
+    sub: 'A simple engine that turns local search demand into work on your calendar — running in the background, every day.',
+  },
+  features: [
+    { icon: 'search', title: 'Rank where they search', body: 'We optimize your site for the exact terms customers type — "emergency plumber near me," "AC repair [city]" — so you show up before the competition.' },
+    { icon: 'phone', title: 'Turn visits into calls', body: 'Clear calls, click-to-book, and prominent contact details turn the people who land on your site into booked jobs, not bounces.' },
+    { icon: 'trending', title: 'Compound month over month', body: 'Local SEO builds. Every month your visibility grows and lead cost drops — unlike ads that stop the second you stop paying.' },
+  ],
+  intsHead: {
+    title: 'Leads land in the tools you already use',
+    sub: 'No separate inbox, no copy-paste. New leads flow straight into your field-service software so nothing slips between the cracks.',
+  },
+  ints: [
+    { brand: 'Jobber', body: 'New leads and bookings drop straight into Jobber, ready to schedule.' },
+    { brand: 'ServiceTitan', body: 'Inbound jobs route into ServiceTitan with the customer details attached.' },
+    { brand: 'Housecall Pro', body: 'Leads sync to Housecall Pro so your team works one queue, not two.' },
+  ],
+  ctaTitle: 'Get more jobs from search.',
+  ctaSub: 'We\'re opening early access to a small group of field-service businesses. Tell us what you run and we\'ll prioritize your integration.',
+  ctaList: ['No pricing commitment', 'Priority onboarding when we open', 'Leads into your existing system'],
+  footerTag: 'Turning local search into booked field-service jobs.',
+};

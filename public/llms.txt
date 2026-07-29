@@ -1,0 +1,9 @@
+# Field Service Leads
+
+A website and local SEO engine for field service businesses. Turns local search traffic into booked jobs by combining a fast, optimized website with always-on SEO tuned to the searches customers already perform.
+
+**Who it is for:** Field service business owners (HVAC, plumbing, electrical, landscaping, cleaning, and similar trades) who want more booked jobs without managing an agency.
+
+**Integrations:** Works alongside the field service management software you already use — Jobber, ServiceTitan, and Housecall Pro.
+
+**Status:** Early access / waitlist. Sign up at https://fieldserviceleads.com

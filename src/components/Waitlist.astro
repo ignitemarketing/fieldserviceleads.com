@@ -1,0 +1,87 @@
+---
+import { content } from '../content';
+interface Props { id: string; }
+const { id } = Astro.props;
+const source = content.domain;
+---
+<div class="waitlist-root" data-wl={id}>
+  <form class="waitlist" method="POST" action="/api/waitlist" novalidate>
+    <div class="hp" aria-hidden="true">
+      <label for={`company-${id}`}>Company</label>
+      <input type="text" id={`company-${id}`} name="company" tabindex="-1" autocomplete="off" />
+    </div>
+    <input type="hidden" name="source" value={source} />
+    <input type="hidden" name="page" class="wl-page" value="" />
+
+    <div class="field">
+      <label for={`email-${id}`}>Work email</label>
+      <input type="email" id={`email-${id}`} name="email" required autocomplete="email" placeholder="you@yourcompany.com" class="wl-email" />
+      <span class="err wl-err" role="alert" aria-live="polite"></span>
+    </div>
+
+    <div class="field">
+      <label for={`fsm-${id}`}>Which software do you run?</label>
+      <select id={`fsm-${id}`} name="fsm" class="wl-fsm">
+        <option value="">Select one…</option>
+        <option value="Jobber">Jobber</option>
+        <option value="ServiceTitan">ServiceTitan</option>
+        <option value="Housecall Pro">Housecall Pro</option>
+        <option value="Other">Other / none yet</option>
+      </select>
+      <span class="hint">Pick the closest — it helps us prioritize integrations.</span>
+    </div>
+
+    <button type="submit" class="btn btn-primary wl-submit">
+      <span class="wl-label">Request early access</span>
+      <span class="btn-spinner wl-spin" hidden aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 12a9 9 0 1 1-6.2-8.5"/></svg>
+        Sending…
+      </span>
+    </button>
+    <p class="note">Early access only — no pricing commitment, no spam.</p>
+  </form>
+
+  <div class="success-state wl-success" hidden role="status" aria-live="polite">
+    <span class="ok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>
+    <p class="t">You're on the list.</p>
+    <p class="s">We'll email you as early access opens. Keep an eye on your inbox.</p>
+  </div>
+
+  <div class="error-banner wl-error" hidden role="alert" aria-live="assertive">Something went wrong — please try again.</div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.waitlist-root').forEach((root) => {
+    const form = root.querySelector('form') as HTMLFormElement;
+    const email = root.querySelector('.wl-email') as HTMLInputElement;
+    const errSpan = root.querySelector('.wl-err') as HTMLElement;
+    const success = root.querySelector('.wl-success') as HTMLElement;
+    const errorBox = root.querySelector('.wl-error') as HTMLElement;
+    const btn = root.querySelector('.wl-submit') as HTMLButtonElement;
+    const label = root.querySelector('.wl-label') as HTMLElement;
+    const spin = root.querySelector('.wl-spin') as HTMLElement;
+    const pageField = root.querySelector('.wl-page') as HTMLInputElement;
+    if (pageField) pageField.value = location.pathname;
+
+    const loading = (on: boolean) => { btn.disabled = on; label.hidden = on; spin.hidden = !on; };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errSpan.textContent = ''; errorBox.hidden = true;
+      const val = email.value.trim();
+      if (!val || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+        errSpan.textContent = 'Please enter a valid email address.'; email.focus(); return;
+      }
+      loading(true);
+      const data: Record<string, string> = {};
+      new FormData(form).forEach((v, k) => { data[k] = String(v); });
+      try {
+        const res = await fetch('/api/waitlist', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) });
+        const json = await res.json() as { ok: boolean; error?: string };
+        if (json.ok) { form.hidden = true; success.hidden = false; }
+        else if (json.error === 'invalid_email') { errSpan.textContent = 'Please check your email address.'; email.focus(); loading(false); }
+        else { errorBox.hidden = false; loading(false); }
+      } catch { errorBox.hidden = false; loading(false); }
+    });
+  });
+</script>

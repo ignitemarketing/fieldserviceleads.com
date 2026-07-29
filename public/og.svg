@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="mk" x1="0" y1="0" x2="56" y2="56" gradientUnits="userSpaceOnUse"><stop stop-color="#8b8cff"/><stop offset="1" stop-color="#43c4ff"/></linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0" r="0.9"><stop stop-color="#6e7bff" stop-opacity="0.32"/><stop offset="1" stop-color="#6e7bff" stop-opacity="0"/></radialGradient>
+    <linearGradient id="word" x1="80" y1="250" x2="1000" y2="250" gradientUnits="userSpaceOnUse"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#c7ccff"/></linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#08090c"/>
+  <rect width="1200" height="430" fill="url(#glow)"/>
+  <rect x="0.5" y="0.5" width="1199" height="629" rx="0" stroke="#ffffff" stroke-opacity="0.06"/>
+  <!-- brand -->
+  <rect x="80" y="72" width="56" height="56" rx="15" fill="url(#mk)"/>
+  <path d="M95 117 L106 96 L112 107 L122 99" stroke="#0a0b12" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <text x="152" y="110" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" fill="#eceef3">Field Service Leads</text>
+  <!-- headline -->
+  <text y="290" font-family="Inter, Arial, sans-serif" font-size="62" font-weight="700" letter-spacing="-1.5" fill="url(#word)"><tspan x="80" dy="0">More booked jobs from the</tspan><tspan x="80" dy="76">customers already searching.</tspan></text>
+  <!-- tagline -->
+  <text x="80" y="470" font-family="Inter, Arial, sans-serif" font-size="27" font-weight="400" fill="#9aa1ad">A website + always-on SEO engine that turns search into work.</text>
+  <!-- chips -->
+  <g font-family="Inter, Arial, sans-serif" font-size="22" font-weight="500" fill="#c9cdff">
+    <rect x="80" y="520" width="150" height="48" rx="24" fill="#ffffff" fill-opacity="0.05" stroke="#7c86ff" stroke-opacity="0.3"/><text x="105" y="551">Jobber</text>
+    <rect x="246" y="520" width="190" height="48" rx="24" fill="#ffffff" fill-opacity="0.05" stroke="#7c86ff" stroke-opacity="0.3"/><text x="271" y="551">ServiceTitan</text>
+    <rect x="452" y="520" width="210" height="48" rx="24" fill="#ffffff" fill-opacity="0.05" stroke="#7c86ff" stroke-opacity="0.3"/><text x="477" y="551">Housecall Pro</text>
+  </g>
+</svg>
