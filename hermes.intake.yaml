@@ -1,0 +1,12 @@
+sandbox: utm-guest
+install: "true"
+test: "echo 'no test infra yet'"
+timeout_seconds: 120
+network: allowlist
+max_diff_lines: 400
+forbidden_paths:
+  - .github/workflows/**
+  - hermes.intake.yaml
+no_autonomy_paths: []
+data_eligibility: deepseek-ok
+clickup_migration_enabled: true
