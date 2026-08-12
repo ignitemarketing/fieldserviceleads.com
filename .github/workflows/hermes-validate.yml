@@ -9,7 +9,7 @@
 #   - GitHub-hosted runner only
 #   - no secrets, no environments, read-only token
 #   - actions pinned by commit SHA, not tag
-#   - no dependency install, so no lifecycle scripts execute
+#   - install step runs the configured install command before tests
 
 name: hermes-validate
 
@@ -36,11 +36,28 @@ jobs:
           persist-credentials: false
 
       - name: Runtime version
-        run: echo 'no runtime version check configured'
+        run: node --version
+
+      - name: Install dependencies
+        run: npm install
 
       - name: Tests
-        run: true
+        run: npm run build
 
       - name: Verifier self-check (negative suite must fail)
         run: |
-          echo "::notice::no negative-fixture pattern for this test command — skipping verifier self-check"
+          NEG_DIR="$(mktemp -d)"
+          NEG_FILE="$NEG_DIR/inline-negative.test.js"
+          printf '%s\n' \
+            'import { test } from "node:test";' \
+            'import assert from "node:assert/strict";' \
+            '' \
+            'test("synthetic negative: this assertion must fail", () => {' \
+            '  assert.equal(1, 2, "inline negative fixture -- expected failure");' \
+            '});' \
+            > "$NEG_FILE"
+          if node --test "$NEG_FILE" >/dev/null 2>&1; then
+            echo "::error::negative suite PASSED — the verifier is not executing tests"
+            exit 1
+          fi
+          echo "negative suite failed as required — verifier is live"
