@@ -4,8 +4,6 @@
    reference these classes. Per-site differences live in content.ts only.
    ============================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;450;500;600;700&display=swap');
-
 :root {
   /* surfaces */
   --bg:          #08090c;
