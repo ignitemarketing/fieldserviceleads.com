@@ -1,3 +1,7 @@
 allowBuilds:
   esbuild: true
   sharp: true
+# source-map-js: astro 7.4.2's css-tree/magicast chain still resolves 1.2.1,
+# which carries a high advisory; patched in 1.2.2.
+overrides:
+  source-map-js: '>=1.2.2'
