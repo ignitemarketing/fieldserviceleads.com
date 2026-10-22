@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro';
+import { content as c } from '../content';
+---
+<Base path="/">
+  <header class="hdr">
+    <div class="wrap hdr-inner">
+      <a class="brand" href="/" aria-label={`${c.brand} home`}>{c.brand}</a>
+      <a class="hdr-cta" href="/#waitlist">{c.navCta}</a>
+    </div>
+  </header>
+
+  <main class="sec notfound">
+    <div class="wrap notfound-inner">
+      <span class="eyebrow">404 · Page not found</span>
+      <h1>That page isn't here.</h1>
+      <p>The link may be old or mistyped. Everything we have is on the home page — or skip ahead and request early access.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/#waitlist">{c.navCta}</a>
+        <a class="btn btn-ghost" href="/">Back to home</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="ftr"><div class="wrap">
+    <div class="ftr-inner">
+      <a class="brand" href="/">{c.brand}</a>
+      <div class="meta"><span>Built by <a href="https://ignitemarketing.com">Ignite Marketing</a></span><span>© 2026 {c.brand}</span></div>
+    </div>
+  </div></footer>
+</Base>
+
+<style>
+  .notfound { padding: clamp(64px, 12vh, 132px) 0 clamp(64px, 12vh, 132px); }
+  .notfound-inner { max-width: 620px; }
+  .notfound h1 { font-size: clamp(2.2rem, 4.6vw, 3.2rem); margin: 16px 0 0; }
+  .notfound p { margin-top: 18px; color: var(--fg-muted); font-size: 1.05rem; max-width: 46ch; }
+  .notfound .hero-actions { margin-top: 30px; }
+</style>
