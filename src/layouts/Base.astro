@@ -1,5 +1,9 @@
 ---
 import '../styles/global.css';
+import '@fontsource-variable/inter';
+import '@fontsource-variable/space-grotesk';
+import interLatinWoff2 from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
+import spaceGroteskLatinWoff2 from '@fontsource-variable/space-grotesk/files/space-grotesk-latin-wght-normal.woff2?url';
 import { content } from '../content';
 
 interface Props { path?: string; }
@@ -44,9 +48,9 @@ const jsonld = {
     <meta name="twitter:description" content={c.description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <style is:inline>:root{--font-display:'Space Grotesk',sans-serif;--font-body:'Inter',system-ui,sans-serif;}</style>
+    <link rel="preload" href={interLatinWoff2} as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href={spaceGroteskLatinWoff2} as="font" type="font/woff2" crossorigin="anonymous" />
+    <style is:inline>:root{--font-display:'Space Grotesk Variable','Space Grotesk',sans-serif;--font-body:'Inter Variable','Inter',system-ui,sans-serif;}</style>
     <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />
   </head>
   <body>
