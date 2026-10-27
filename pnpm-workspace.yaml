@@ -6,3 +6,8 @@ allowBuilds:
 # which carries a high advisory; patched in 1.2.2.
 overrides:
   source-map-js: '>=1.2.2'
+# zod: @astrojs/sitemap resolves 4.6.5 (GHSA-mrhx-c7xc-m3w5); patched in 4.6.6.
+# undici: astro>unifont resolves 8.11.2 (GHSA-xjj6-f33q-929c); patched in 8.12.2.
+# Both stay inside the dependents' declared ranges.
+  'zod@<4.6.6': '^4.6.6'
+  'undici@>=8.0.0 <8.12.2': '^8.12.2'
