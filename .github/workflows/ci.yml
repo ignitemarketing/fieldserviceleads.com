@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  # The job name is the required status check context on main (ruleset
+  # 20619533); renaming it leaves every PR unmergeable.
+  validate:
+    name: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        with:
+          version: 11
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+          check-latest: true
+          cache: 'pnpm'
+      - id: install
+        run: pnpm install --frozen-lockfile
+      # Every check below runs even if an earlier one failed, so one run
+      # reports every failure.
+      - id: build
+        name: Build
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: pnpm run build
+      - id: test
+        name: Tests
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: pnpm run --if-present test
+      - id: audit
+        name: Production dependency audit (blocks high+)
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: pnpm audit --prod --audit-level=high
+      - name: Summary
+        if: ${{ always() }}
+        env:
+          INSTALL: ${{ steps.install.outcome }}
+          BUILD: ${{ steps.build.outcome }}
+          TEST: ${{ steps.test.outcome }}
+          AUDIT: ${{ steps.audit.outcome }}
+        run: |
+          failed=""
+          [ "$INSTALL" = success ] || failed="$failed install($INSTALL)"
+          [ "$BUILD" = success ] || failed="$failed build($BUILD)"
+          [ "$TEST" = success ] || failed="$failed test($TEST)"
+          [ "$AUDIT" = success ] || failed="$failed audit($AUDIT)"
+          if [ -n "$failed" ]; then
+            echo "::error::failed checks:$failed"
+            exit 1
+          fi
+          echo "all checks passed"
