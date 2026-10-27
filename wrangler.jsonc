@@ -11,10 +11,10 @@
     "not_found_handling": "404-page",
     "run_worker_first": ["/api/*"]
   },
-  // Waitlist signups, one key per email (signup:<email>). No id: wrangler
-  // provisions the namespace on the first deploy and reuses it afterwards.
+  // Waitlist signups, one key per email (signup:<email>). The id is pinned
+  // because the deploy token cannot list or create KV namespaces.
   "kv_namespaces": [
-    { "binding": "WAITLIST" }
+    { "binding": "WAITLIST", "id": "854d4d17133b45608fa610f739f205a6" }
   ],
   // 5 waitlist posts per client IP per 60 s.
   "ratelimits": [
