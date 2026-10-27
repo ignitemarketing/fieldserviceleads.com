@@ -5,4 +5,5 @@ export default defineConfig({
   site: 'https://fieldserviceleads.com',
   integrations: [sitemap()],
   build: { inlineStylesheets: 'auto' },
+  vite: { build: { assetsInlineLimit: 0 } },
 });
