@@ -30,7 +30,7 @@ jobs:
       - name: Worker tests
         run: pnpm test
       - name: Deploy Workers Static Assets
-        run: npx --yes wrangler@4 deploy --config wrangler.jsonc
+        run: pnpm exec wrangler deploy --config wrangler.jsonc
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
