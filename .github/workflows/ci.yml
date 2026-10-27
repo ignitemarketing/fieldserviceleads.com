@@ -38,6 +38,10 @@ jobs:
         name: Build
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: pnpm run build
+      - id: test
+        name: Tests
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: pnpm run --if-present test
       - id: audit
         name: Production dependency audit (blocks high+)
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
@@ -47,11 +51,13 @@ jobs:
         env:
           INSTALL: ${{ steps.install.outcome }}
           BUILD: ${{ steps.build.outcome }}
+          TEST: ${{ steps.test.outcome }}
           AUDIT: ${{ steps.audit.outcome }}
         run: |
           failed=""
           [ "$INSTALL" = success ] || failed="$failed install($INSTALL)"
           [ "$BUILD" = success ] || failed="$failed build($BUILD)"
+          [ "$TEST" = success ] || failed="$failed test($TEST)"
           [ "$AUDIT" = success ] || failed="$failed audit($AUDIT)"
           if [ -n "$failed" ]; then
             echo "::error::failed checks:$failed"
