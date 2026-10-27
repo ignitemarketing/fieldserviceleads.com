@@ -19,3 +19,15 @@
 
 /llms.txt
   Cache-Control: public, max-age=86400
+
+# Security headers for every response. The Waitlist script is emitted as an
+# external /_astro/ file (vite.build.assetsInlineLimit: 0 in astro.config.mjs),
+# so script-src stays 'self' with no hashes; the JSON-LD block is data, not
+# script, and CSP does not apply to it. Fonts are self-hosted under /_astro/.
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
