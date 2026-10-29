@@ -2,6 +2,10 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "fieldserviceleads",
   "compatibility_date": "2026-07-01",
+  // fieldserviceleads.com is the only public host; keep the
+  // fieldserviceleads.colin4567.workers.dev and preview URLs off.
+  "workers_dev": false,
+  "preview_urls": false,
   // Static site only. The waitlist form posts same-origin to
   // /api/forms/waitlist, which the shared ignite-forms Worker serves on this
   // zone; this project carries markup only.
