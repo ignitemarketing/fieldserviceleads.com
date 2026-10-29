@@ -5,11 +5,12 @@ const { id } = Astro.props;
 const source = content.domain;
 ---
 <div class="waitlist-root" data-wl={id}>
-  <form class="waitlist" method="POST" action="/api/waitlist" novalidate>
+  <form class="waitlist" method="POST" action="/api/forms/waitlist" novalidate>
     <div class="hp" aria-hidden="true">
-      <label for={`company-${id}`}>Company</label>
-      <input type="text" id={`company-${id}`} name="company" tabindex="-1" autocomplete="off" />
+      <label for={`company-website-${id}`}>Company website</label>
+      <input type="text" id={`company-website-${id}`} name="company_website" tabindex="-1" autocomplete="off" />
     </div>
+    <input type="hidden" name="_redirect" value="/" />
     <input type="hidden" name="source" value={source} />
     <input type="hidden" name="page" class="wl-page" value="" />
 
@@ -31,6 +32,8 @@ const source = content.domain;
       <span class="hint">Pick the closest — it helps us prioritize integrations.</span>
     </div>
 
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAAFq83BuBl_uiz2Sq" data-theme="dark"></div>
+
     <button type="submit" class="btn btn-primary wl-submit">
       <span class="wl-label">Request early access</span>
       <span class="btn-spinner wl-spin" hidden aria-hidden="true">
@@ -50,6 +53,7 @@ const source = content.domain;
   <div class="error-banner wl-error" hidden role="alert" aria-live="assertive">Something went wrong — please try again.</div>
 </div>
 
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script>
   document.querySelectorAll<HTMLElement>('.waitlist-root').forEach((root) => {
     const form = root.querySelector('form') as HTMLFormElement;
@@ -63,6 +67,11 @@ const source = content.domain;
     const pageField = root.querySelector('.wl-page') as HTMLInputElement;
     if (pageField) pageField.value = location.pathname;
 
+    // A post without JavaScript comes back as /?form=sent or /?form=error.
+    const result = new URLSearchParams(location.search).get('form');
+    if (result === 'sent') { form.hidden = true; success.hidden = false; root.scrollIntoView(); }
+    else if (result === 'error') { errorBox.hidden = false; root.scrollIntoView(); }
+
     const loading = (on: boolean) => { btn.disabled = on; label.hidden = on; spin.hidden = !on; };
 
     form.addEventListener('submit', async (e) => {
@@ -73,15 +82,21 @@ const source = content.domain;
         errSpan.textContent = 'Please enter a valid email address.'; email.focus(); return;
       }
       loading(true);
-      const data: Record<string, string> = {};
-      new FormData(form).forEach((v, k) => { data[k] = String(v); });
+      const body = new URLSearchParams();
+      new FormData(form).forEach((v, k) => { body.append(k, String(v)); });
+      // A Turnstile token is single-use, so a failed post needs a fresh one.
+      const fail = (message?: string) => {
+        if (message) { errSpan.textContent = message; email.focus(); } else { errorBox.hidden = false; }
+        (window as unknown as { turnstile?: { reset(): void } }).turnstile?.reset();
+        loading(false);
+      };
       try {
-        const res = await fetch('/api/waitlist', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(data) });
+        const res = await fetch(form.action, { method: 'POST', headers: { accept: 'application/json' }, body });
         const json = await res.json() as { ok: boolean; error?: string };
         if (json.ok) { form.hidden = true; success.hidden = false; }
-        else if (json.error === 'invalid_email') { errSpan.textContent = 'Please check your email address.'; email.focus(); loading(false); }
-        else { errorBox.hidden = false; loading(false); }
-      } catch { errorBox.hidden = false; loading(false); }
+        else if (json.error === 'invalid_email') fail('Please check your email address.');
+        else fail();
+      } catch { fail(); }
     });
   });
 </script>
